@@ -1,0 +1,56 @@
+[
+  {
+    "productId":1,
+    "productName":"Biba",
+    "productType":"Women's Cotton Anarkali with Palazzo",
+    "productImg":"assets/img/k1.jpg",
+    "productPrice":2500,
+    "productDesc":"A kurta palazzo set for your summer wardrobe; The set includes 2 pieces, a red kurt and palazzo matching to the kurta.",
+    "rating":3.4
+  },
+  {
+    "productId":2,
+    "productName":"W For Women",
+    "productType":"Women's Light Blue printed kurta with palazzo and Dupatta",
+    "productImg":"assets/img/k2.jpg",
+    "productPrice":3500,
+    "productDesc":"A light blue shade kurta palazzo set for your wardrobe; The set includes 3 pieces, a light-blue shade kurta, one blue shade dupatta and light-blue palazzo matching to the kurta.",
+    "rating":3.8
+  },
+  {
+    "productId":3,
+    "productName":"Melange",
+    "productType":"Women's Maroon Cotton Kurta With Pant And Dupatta",
+    "productImg":"assets/img/k3.jpg",
+    "productPrice":4500,
+    "productDesc":"A maroon self design, round neck, frilled kurta with tie-up. The set includes one maroon kurta.",
+    "rating":2.4
+  },
+  {
+    "productId":4,
+    "productName":"Taavi",
+    "productType":"Women's Cotton White Printed Kurta",
+    "productImg":"assets/img/k4.jpg",
+    "productPrice":1599,
+    "productDesc":"Women's cotton white printed anarkali style long gown kurta set with dupatta.The set includes 1 kurta, 1 palazzo and 1 dupatta",
+    "rating":5.0
+  },
+  {
+    "productId":5,
+    "productName":"Vasuda",
+    "productType":"Women's Cotton Printed Kurta with Pants and Dupatta",
+    "productImg":"assets/img/k5.jpg",
+    "productPrice":4599,
+    "productDesc":"Women's ethnic motifs printed cotton blend anarkali kurta trouser with dupatta set.",
+    "rating":4.4
+  },
+  {
+    "productId":6,
+    "productName":"Biba",
+    "productType":"Women's Cotton Indigo Kurta with Palazzo and Dupatta",
+    "productImg":"assets/img/k6.jpg",
+    "productPrice":2599,
+    "productDesc":"Women's indigo pure cambric cotton floral printed kurta set with dupatta.",
+    "rating":4.8
+  }
+]
