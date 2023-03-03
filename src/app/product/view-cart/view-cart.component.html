@@ -1,39 +1,45 @@
 
-<div class="container divStyle">
-  <div class="row bg-dark headStyle">
-    <div class="col-sm-2" style="margin:20px 0px 20px 0px;" ><b>Items</b></div>
-    <div class="col-sm-7 row" style="margin:20px 0px 20px 0px;">
-        <div class="col-sm-4"><b>Product</b></div>
-        <div class="col-sm-4"><b>Description</b></div>
-        <div class="col-sm-4"><b>Amount</b></div>
+<div class="container mt-5 divStyle">
+
+  <div class="row bg-dark d-flex justify-content-center headStyle">
+    <div class="col-sm-2"><b>Products</b></div>
+    <div class="col-sm-7 row">
+        <div class="col-sm-2"><b>Name</b></div>
+        <div class="col-sm-2"><b>Price</b></div>
+        <div class="col-sm-3"><b>Discount</b></div>
+        <div class="col-sm-2"><b>Rate</b></div>
+        <div class="col-sm-3"><b>Quantity</b></div>
     </div>
-    <div class="col-sm-2" style="margin:20px 0px 20px 0px;"><b>Quantity</b></div>
-    <div class="col-sm-1" style="margin:20px 0px 20px 0px;" ></div>
+    <div class="col-sm-2"><b>Sub Total</b></div>
+    <div class="col-sm-1"></div>
   </div>
-  <div class="row rowStyle">
+
+  <div class="row d-flex justify-content-center rowStyle" *ngFor="let cart of cart$.items">
     <div class="col-sm-2">
-      <img src="" class="img-fluid" style="width:80px;height:100px;" />
+      <img src="http://localhost:3000/{{cart.productId.productImage}}"  class="img-fluid" style="width:80px;height:100px;" />
     </div>
-    <div class="col-sm-7">
-      <div class="row">
-        <div class="col-sm-4" ><b>
-          </b>
+    <div class="col-sm-7 row">
+        <div class="col-sm-2">{{cart.productId.productName}}</div>
+        <div class="col-sm-2">{{cart.productId.productPrice| currency:"INR" }}</div>
+        <div class="col-sm-3">{{( cart.productId.productPrice * 10/100) | currency:"INR"}} (-{{discountrate}}% ) </div>
+        <div class="col-sm-2">{{cart.productId.productPrice|discount:discountrate| currency:"INR" }}</div>
+        <div class="col-sm-3">
+          <button class="btn" (click)="changeQty(cart.productId._id, 'add')">+</button>
+          {{cart.quantity}}
+          <button class="btn" (click)="changeQty(cart.productId._id, 'min')">-</button>
         </div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4"></div>
-      </div>
     </div>
-    <div class="col-sm-2">
-      <button class="btn btn-outline-warning">+</button>
-      3
-      <button class="btn btn-outline-warning">-</button>
-    </div>
-    <div class="col-sm-1"><i class="bi bi-trash"></i></div>
+    <div class="col-sm-2">{{ (cart.productId.productPrice - ( cart.productId.productPrice * 10/100)) * cart.quantity | currency:"INR" }} </div>
+    <div class="col-sm-1"><button class="btn bi bi-trash" (click)="deleteItem(cart.productId._id)"></button></div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-10"></div>
-    <div class="col-sm-2" ><button class="btn btn-outline-warning" style="float:right;">Check Out</button></div>
-
+  <div class="row bg-dark d-flex justify-content-center headStyle">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-7 row"></div>
+    <div class="col-sm-2">Total : <b>{{total | currency:"INR"}}</b></div>
+    <div class="col-sm-1"><button class="btn btn-outline-warning" style="float:right;" (click)="checkOut()">Check Out</button></div>
   </div>
 </div>
+
+
+

@@ -8,8 +8,9 @@ import { map, Observable } from 'rxjs'
   providedIn: 'root'
 })
 export class ProductService {
-  apiURL="http://localhost:3000"
-  //apiURL="/my-amazon/assets/product.json"
+  apiURL='https://amazon-backend-c8eo.onrender.com';
+
+   // apiURL="http://localhost:3000"
 
   constructor(private http:HttpClient) { }
 

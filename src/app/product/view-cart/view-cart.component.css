@@ -1,5 +1,4 @@
 .divStyle{
-  margin-top:50px;
   padding-top: 50px;
   padding-bottom:169px;
 }
@@ -14,5 +13,7 @@
 .headStyle{
   color:whitesmoke;
   border-radius: 6px;
+  padding-top: 13px;
+  padding-bottom: 13px;
 }
 

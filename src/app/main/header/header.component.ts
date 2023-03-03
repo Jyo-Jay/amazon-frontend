@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
 import { UsersService } from '../../services/users.service';
 
@@ -13,8 +12,8 @@ export class HeaderComponent implements OnInit {
   counter!:number
   display: any;
   isLoggedIn$ : any
-  user$ : any = null;
-
+  userid : any = null
+  cart : any;
 
 constructor(private cartservice:CartService, private userService:UsersService) {
     console.log("Header is created")
@@ -23,33 +22,33 @@ constructor(private cartservice:CartService, private userService:UsersService) {
   }
 
 ngOnInit(): void {
-    this.cartservice.cartCounter$.subscribe({
-      next:(value:number) => this.counter=value,
-      error:(e:any) => console.error("Error",e),
-      complete:() => console.log("Done."),
-    })
-    //this.user$ = localStorage.getItem('userName');
-  }
 
+  this.cartservice.cartCounter$.subscribe({
+    next:(value:number) => this.counter=value,
+    error:(e:any) => console.error("Error",e),
+    complete:() => console.log("Done.")
+  })
 
-onClick()
- {
-   this.cartservice.cartCounter = 0
-   this.cartservice.cartCounter$.next(0)
- }
+  let userid = localStorage.getItem('currentUserId');
+  this.cartservice.getCartItems(userid).subscribe((data:any)=>{
+    this.cart = data;
+    if(this.cart[0].userId === userid)
+      {
+        this.cart[0].items.forEach((element:any)=>{
+            this.counter += element.quantity;
+        })
+      }
+      else{
+        this.cartservice.cartCounter = 0
+        this.cartservice.cartCounter$.next(0)
+      }
+  });
 
-
+}
 
 logout(): void {
    this.userService.logout();
-   //localStorage.removeItem('userName');
   }
 
-  // openModal(){
-  //   this.display='block'
-  // }
-  // onCloseHandled(){
-  //   this.display='none'
-  // }
 
 }

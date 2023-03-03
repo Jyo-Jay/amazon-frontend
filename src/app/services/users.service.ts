@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable, map, BehaviorSubject } from 'rxjs';
 import { User } from '../model/user.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-  apiURL="http://localhost:3000"
+ apiURL='https://amazon-backend-c8eo.onrender.com';
+ //apiURL="http://localhost:3000"
 
 
   //private currentUser = localStorage.getItem('currentUserId') ? true : false;

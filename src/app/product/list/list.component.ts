@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Cart } from 'src/app/model/cart.model';
 import { CartService } from '../../services/cart.service';
 //import { Product } from '../../model/product.model';
 import { ProductService } from '../../services/product.service';
+import { UsersService } from 'src/app/services/users.service';
+import { User } from 'src/app/model/user.model';
 
 @Component({
   selector: 'app-list',
@@ -12,9 +13,6 @@ import { ProductService } from '../../services/product.service';
 })
 export class ListComponent implements OnInit {
 
-
-
-//productList:Product[]=[]
 
 
 styleclass={
@@ -29,30 +27,61 @@ styleText={
  discountrate:number=10
 
  products$ = this.productservice.getProducts();
+ user = localStorage.getItem('currentUserId');
 
- constructor(private cartService:CartService, private productservice:ProductService, private router:Router) { }
+
+ constructor(private cartService:CartService, private productservice:ProductService,private userService:UsersService, private router:Router) { }
 
 
-  ngOnInit(): void {
-    // this.productservice.getProducts().subscribe({
-    //   next:(list:Product[])=>this.productList=list,
-    //   error:(e:any)=>console.error("Error",e),
-    //   complete:()=>console.log("Done")
-    // })
-  }
+  ngOnInit(): void { }
 
   show(value:number){
     console.log(value)
   }
 
-  addToCart(id:any){
-    this.cartService.addToCart(id)
-    .subscribe(data=>{
-      console.log(data);
-      //this.router.navigate(['/product/view-cart'])
+  addCartItems(productId:any){
 
-    });
-    this.cartService.increaseCartCounter()
+      let userid = localStorage.getItem('currentUserId');
+
+      if(userid)
+      {
+        this.cartService.getCartItems(userid).subscribe(data=>{
+
+        if(data.length > 0)
+        {
+          let cartItems : any = [];
+          let bool  = false;
+          let userItems = data[0];
+
+          userItems.items.forEach((element: any) => {
+            if(element.productId == productId)
+             {
+                bool = true;
+                cartItems.push({productId:element.productId, quantity:element.quantity + 1})
+             }
+            else
+             {
+                cartItems.push({productId:element.productId,quantity: element.quantity})
+             }
+          });
+
+          if(!bool){
+            cartItems.push({productId:productId,quantity: 1});
+           }
+            this.cartService.updateCart(cartItems).subscribe(data=>{
+            console.log(data);
+            });
+        }
+        else{
+            this.cartService.addToCart( userid, productId, 1  )
+            .subscribe(data=>{
+              console.log(data);
+            });
+          }
+        this.cartService.increaseCartCounter()
+      });
+      }
+
+    }
   }
 
-}

@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Cart } from 'src/app/model/cart.model';
-import { Product } from 'src/app/model/product.model';
-import { CartService } from 'src/app/services/cart.service';
-import { ProductService } from 'src/app/services/product.service';
 
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-view-cart',
@@ -13,19 +10,89 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ViewCartComponent implements OnInit {
 
-  cart!: Cart
+  cart$!:any;
+  cart : any = [] ;
+  updatedCart: any = [];
 
-  discount:number=10
-  constructor( private cartservice:CartService, private activatedroute:ActivatedRoute ) { }
+  product$!: any;
+  discountrate:number=10
+  total: number = 0;
+
+
+  constructor( private cartservice:CartService, private router:Router) { }
 
   ngOnInit(): void {
-    let id:string=this.activatedroute.snapshot.params['id'];
-      this.cartservice.getCartItems().subscribe({
-      next:(list:Cart[])=>{
-        this.cart = list.find(c=>{return c._id==id})!
-      }
-    })
 
+      let subTotal = 0;
+      this.cartservice.viewCartItems(localStorage.getItem('currentUserId')).subscribe( (data:any) =>{
+        this.cart$ = data;
+          this.cart$.items.forEach( (element:any)=>{
+            subTotal =  ((element.productId.productPrice - (element.productId.productPrice * 10/100)) * element.quantity);
+            this.total += subTotal;
+          })
+        console.log(this.total);
+        });
+
+   }
+
+  changeQty(id:any , value:string){
+    this.cart$.items.forEach((element:any)=> {
+        if(element.productId._id == id)
+        {
+          let qty = element.quantity;
+
+          if(value === 'add')
+            this.updatedCart.push({productId:element.productId._id, quantity:qty+1})
+          else if (value === 'min')
+            this.updatedCart.push({productId:element.productId._id, quantity:qty-1})
+        }
+        else
+        {
+          this.updatedCart.push({productId:element.productId, quantity:element.quantity})
+        }
+
+    });
+
+    this.cartservice.updateCart(this.updatedCart).subscribe(data=>{
+     // console.log(data);
+      this.cartservice.increaseCartCounter()
+      window.location.reload()
+    });
+
+
+  }
+
+
+  deleteItem(id:any){
+      let updatedCart : any = [];
+      this.cart$.items.forEach((element:any)=> {
+        if(element.productId._id != id)
+        {
+            updatedCart.push({productId:element.productId, quantity:element.quantity})
+        }
+      })
+        this.cartservice.updateCart(updatedCart).subscribe(data=>{
+          this.cartservice.increaseCartCounter()
+          window.location.reload();
+        });
+
+  }
+
+  checkOut(){
+      alert('Order is Placed !!');
+      let userid = localStorage.getItem('currentUserId');
+      this.cartservice.getCartItems(userid).subscribe( data=>{
+      this.cart = data;
+
+      this.cartservice.orderedItems(userid, this.cart[0].items).subscribe(data=>{
+        console.log(data);
+      });
+
+
+
+
+      this.router.navigate(['/home']);
+    })
   }
 
 
@@ -33,31 +100,4 @@ export class ViewCartComponent implements OnInit {
 
 
 
-
-
-
-
-
-  // products:Product[]=[
-  //   {
-  //     "_id":"3094834",
-  //     "productName":"Biba",
-  //     "productType":"Women's Cotton Anarkali with Palazzo",
-  //     "productImage":"assets/img/k1.jpg",
-  //     "productPrice":2500,
-  //     "productDesc":"A kurta palazzo set for your summer wardrobe; The set includes 2 pieces, a red kurt and palazzo matching to the kurta.",
-
-  //     "rating":3.4
-  //   },
-  //   {
-  //     "_id":"309345334",
-  //     "productName":"W For Women",
-  //     "productType":"Women's Light Blue printed kurta with palazzo and Dupatta",
-  //     "productImage":"assets/img/k2.jpg",
-  //     "productPrice":3500,
-  //     "productDesc":"A light blue shade kurta palazzo set for your wardrobe; The set includes 3 pieces, a light-blue shade kurta, one blue shade dupatta and light-blue palazzo matching to the kurta.",
-  //     "rating":3.8,
-
-  //   }
-  // ]
 

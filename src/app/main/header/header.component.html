@@ -24,13 +24,13 @@
 
       </ul>
       <div class="d-flex">
-        <!-- <button class="btn btn-dark nav-arrow" type="button" style="font-size:14px; margin-right: 4px;" [routerLink]="['/user','register']">Sign Up</button> -->
+
         <button class="btn btn-dark nav-arrow" type="button" style="font-size:14px; margin-right: 4px;" [routerLink]="['/user','signin']" *ngIf="!(isLoggedIn$ | async)">SignIn</button>
         <button class="btn btn-dark nav-arrow" type="button" style="font-size:14px; margin-right: 4px;"(click)="logout()" *ngIf="isLoggedIn$ | async" [routerLink]="['/home']">Logout</button>
 
-        <button type="button" class="btn btn-warning position-relative" (click)="onClick()" [routerLink]="['/product','view-cart']" >
+        <button type="button" class="btn btn-warning position-relative" [routerLink]="['/product','view-cart']">
           <i class="bi bi-cart-fill"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{counter}}
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="isLoggedIn$ | async">{{counter}}
           </span>
         </button>
 
@@ -38,26 +38,4 @@
     </div>
   </div>
 </nav>
-	<!-- SignIn Modal
-<div class="modal fade" id="signIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-  <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">SignIn - SignUp</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-        <div class="row rowpadding">
-          <a class="btn btn-warning border-black btnsignIn" [routerLink]="['/user','signin']">Sign In</a>
-        </div>
-        <hr>
-          <small style="margin-right: 10px;">New customer?</small>
-          <a class="btn btn-light border-black btnStartHere" type="button" [routerLink]="['/user','register']">Start Here</a>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-  </div>
-</div> -->
 

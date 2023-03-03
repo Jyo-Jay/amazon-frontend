@@ -19,10 +19,7 @@ export class SignInComponent implements OnInit {
   constructor(private userService: UsersService, private router:Router) { }
 
 
-  ngOnInit(): void {
-  }
-
-
+  ngOnInit(): void {}
 
   get email():FormControl{
     return this.signinForm.get("email") as FormControl
@@ -33,12 +30,13 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit():void{
-    this.userService.signIn(this.signinForm.value)
-    .subscribe(data =>{
+
+    this.userService.signIn(this.signinForm.value).subscribe(data =>{
       console.log(data);
       localStorage.setItem('userName',data.userid);
       this.router.navigate(['/home']);
     });
+
     console.log(this.signinForm.value);
     this.signinForm.reset();
   }

@@ -1,15 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable} from 'rxjs';
-import { Cart } from '../model/cart.model';
+
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  apiURL="http://localhost:3000"
 
+  apiURL= 'https://amazon-backend-c8eo.onrender.com';
+
+  //apiURL="http://localhost:3000"
 
 
   cartCounter:number = 0
@@ -20,34 +23,59 @@ export class CartService {
    }
 
 
-  addToCart(product:string): Observable<Cart[]>{
+  addToCart(userId:any, productId:any, quantity:number): Observable<any>{
+      let userid = localStorage.getItem('currentUserId');
+      return this.httpClient.post<{data :any[]}>(`${this.apiURL}/cart`, {
+        userId : userid, productId, quantity })
+        .pipe( map(response =>{
+            return response.data
+          }));
+  }
+
+  getCartItems(userId:any): Observable<any> {
+        return this.httpClient.get<{ data: any[] }>(`${this.apiURL}/cart/`+userId, {})
+        .pipe(map(response => {
+          return response.data
+        }));
+  }
+
+  viewCartItems(userId:any): Observable<any> {
+    return this.httpClient.get<{ data: any[] }>(`${this.apiURL}/cart/viewCart/`+userId, {})
+    .pipe(map(response => {
+      return response.data
+    }));
+}
+
+  updateCart(cartItems: any):Observable<any>{
+      let userid = localStorage.getItem('currentUserId');
+      return this.httpClient.put<{data :any[]}>(`${this.apiURL}/cart/updateCart/`+userid, {
+        cartItems: cartItems })
+        .pipe(map(response =>{
+            return response
+          }));
+
+  }
+
+orderedItems(userId:any, cartItems:any): Observable<any>{
     let userid = localStorage.getItem('currentUserId');
-    let productQuantity = 1;
-    //let input = {userid: userid, product: [product], productQuantity:productQuantity};
-    return this.httpClient.post<{data :any[]}>(`${this.apiURL}/cart`, {userid: userid, product: [product], productQuantity:productQuantity})
-    .pipe(
-      map(response =>{
-        return response.data as Cart[];
-      }
-    ));
-   }
+    return this.httpClient.post<{data :any[]}>(`${this.apiURL}/order`, {
+      userId : userid, items:cartItems })
+      .pipe( map(response =>{
+          return response.data
+        }));
+  }
 
-   getCartItems(): Observable<Cart[]> {
-      return this.httpClient.get<{ data: any[] }>(`${this.apiURL}/cart`, {
-       }).pipe(
-         map(response => {
-           return response.data as Cart[];
-         })
-       );
-     }
+  deleteCart(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiURL}/cart/${id}`, { });
+  }
 
 
-   increaseCartCounter(){
+
+
+
+  increaseCartCounter(){
     this.cartCounter++
     this.cartCounter$.next(this.cartCounter)
- }
-
-
-
+  }
 
 }

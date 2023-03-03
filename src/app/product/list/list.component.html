@@ -9,7 +9,7 @@
             <p class="card-text" [style]="styleclass"><del>{{product.productPrice|currency:"INR"}}</del>&nbsp;{{product.productPrice|discount:discountrate|currency:"INR"}} ({{discountrate}}% off)</p>
             <app-star [rating]="product.rating" (clickRating)="show($event)"></app-star>
             <p class="text-center">
-              <button (click)="addToCart(product._id)" class="btn btn-outline-primary m-2">
+              <button (click)="addCartItems(product._id)" class="btn btn-outline-primary m-2">
                 <i class="bi bi-cart-plus"></i>
               </button>
               <button class="btn btn-outline-primary m-2" [routerLink]="['/product','product-details',product._id]">
